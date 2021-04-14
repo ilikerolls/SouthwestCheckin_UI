@@ -45,6 +45,8 @@ class Reservation():
                     r = requests.get(url, headers=headers)
                 data = r.json()
                 if 'httpStatusCode' in data and data['httpStatusCode'] in ['NOT_FOUND', 'BAD_REQUEST', 'FORBIDDEN']:
+                    if 'Verify your information and try again.' in data['message']:
+                        raise Exception('You did not enter the correct name or confirmation number! Try again!')
                     attempts += 1
                     if not self.verbose:
                         print(data['message'])

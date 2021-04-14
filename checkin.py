@@ -48,7 +48,7 @@ def schedule_checkin(flight_time, reservation):
             print("{} got {}{}!".format(doc['name'], doc['boardingGroup'], doc['boardingPosition']))
 
 
-def auto_checkin(reservation_number, first_name, last_name, verbose=False):
+def auto_checkin(reservation_number, first_name, last_name, verbose=False, cli=True):
     r = Reservation(reservation_number, first_name, last_name, verbose)
     body = r.lookup_existing_reservation()
 
@@ -74,15 +74,16 @@ def auto_checkin(reservation_number, first_name, last_name, verbose=False):
             t.start()
             threads.append(t)
 
-    # cleanup threads while handling Ctrl+C
-    while True:
-        if len(threads) == 0:
-            break
-        for t in threads:
-            t.join(5)
-            if not t.is_alive():
-                threads.remove(t)
+    if cli:
+        # cleanup threads while handling Ctrl+C
+        while True:
+            if len(threads) == 0:
                 break
+            for t in threads:
+                t.join(5)
+                if not t.is_alive():
+                    threads.remove(t)
+                    break
 
 
 if __name__ == '__main__':
@@ -98,4 +99,7 @@ if __name__ == '__main__':
         auto_checkin(reservation_number, first_name, last_name, verbose)
     except KeyboardInterrupt:
         print("Ctrl+C detected, canceling checkin")
+        sys.exit()
+    except Exception as e:
+        print(e)
         sys.exit()
