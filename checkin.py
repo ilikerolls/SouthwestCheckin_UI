@@ -12,16 +12,17 @@ Options:
   --version     Show version.
 
 """
-from datetime import datetime
-from datetime import timedelta
-from dateutil.parser import parse
-from docopt import docopt
-from math import trunc
-from pytz import utc
-from southwest import Reservation, openflights
-from threading import Thread
 import sys
 import time
+from datetime import datetime
+from datetime import timedelta
+from math import trunc
+from threading import Thread
+
+from docopt import docopt
+from pytz import utc
+
+from southwest import Reservation, openflights
 
 CHECKIN_EARLY_SECONDS = 5
 
