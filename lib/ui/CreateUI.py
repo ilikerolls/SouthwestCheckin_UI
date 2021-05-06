@@ -6,6 +6,7 @@ __author__ = "Marcis Greenwood"
 __email__ = "greenwood.marcis@hotmail.com"
 __license__ = "GPL"
 
+
 class CreateUI(Ui_MainWindow, QtWidgets.QMainWindow, QtWidgets.QApplication):
     """
     Creates the Graphical User Interface. Should be a subclass of your generated PyQt5 class .py file from your .ui

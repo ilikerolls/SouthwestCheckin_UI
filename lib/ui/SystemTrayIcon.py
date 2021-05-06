@@ -4,6 +4,7 @@ __author__ = "Marcis Greenwood"
 __email__ = "greenwood.marcis@hotmail.com"
 __license__ = "GPL"
 
+
 class RightClickMenuIndicator(QtWidgets.QMenu):
     """
     Right Click Menu Class for tray icon
@@ -58,6 +59,8 @@ class SystemTrayIcon(QtWidgets.QSystemTrayIcon):
 
         QtWidgets.QSystemTrayIcon.show(self)
 
+        self.setToolTip('SouthWest Auto Check IN App')
+
     def onTrayIconActivated(self, reason):
         """
         Show window on double Click
@@ -66,16 +69,3 @@ class SystemTrayIcon(QtWidgets.QSystemTrayIcon):
         if reason == QtWidgets.QSystemTrayIcon.DoubleClick and not self.parent.isVisible():
             self.parent.show()
 
-    def closeEvent(self, event):
-        """
-        Overrides close event & minimizes to system tray instead
-        :param event: close event object
-        """
-        event.ignore()
-        self.hide()
-        self.tray_icon.showMessage(
-            "Movie Alerter",
-            "Application was minimized to Tray",
-            QtWidgets.QIcon(self.icon_file),
-            2000
-        )

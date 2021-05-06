@@ -10,8 +10,12 @@ __author__ = "Marcis Greenwood"
 __email__ = "greenwood.marcis@hotmail.com"
 __license__ = "GPL"
 
+
 def resource_path(relative_path):
-    """ Get absolute path to resource, works for dev and for PyInstaller """
+    """ Get absolute path to resource, works for dev and for PyInstaller 
+    :param relative_path: string of the path relative to where app is running
+    :return: string with full path name to whatever relative file path is passed in relative_path
+    """
     base_path = getattr(sys, '_MEIPASS', os.path.dirname(os.path.abspath(__file__)))
     return os.path.join(base_path, relative_path)
 

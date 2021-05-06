@@ -27,7 +27,7 @@ from southwest import Reservation, openflights
 
 
 class CheckIN:
-    CHECKIN_EARLY_SECONDS = 5
+    CHECK_IN_EARLY_SECONDS = 5
 
     def __init__(self, reservation_number, first_name, last_name, verbose=False, cli=True):
         self.reservation_number = reservation_number
@@ -44,7 +44,7 @@ class CheckIN:
         # check to see if we need to sleep until 24 hours before flight
         if checkin_time > current_time:
             # calculate duration to sleep
-            delta = (checkin_time - current_time).total_seconds() - CHECKIN_EARLY_SECONDS
+            delta = (checkin_time - current_time).total_seconds() - CheckIN.CHECK_IN_EARLY_SECONDS
             # pretty print our wait time
             m, s = divmod(delta, 60)
             h, m = divmod(m, 60)
@@ -98,15 +98,18 @@ class CheckIN:
 
     def kill_thread(self):
         """
-        Kills the current thread
+        Kills all threads even though there really is only 1 anyway
         """
 
         for t in self.threads:
-            thread_id = t.ident
-            res = ctypes.pythonapi.PyThreadState_SetAsyncExc(thread_id, ctypes.py_object(SystemExit))
-            if res > 1:
-                ctypes.pythonapi.PyThreadState_SetAsyncExc(thread_id, 0)
-                print('Failed to kill thread: ', thread_id)
+            if t.is_alive():
+                thread_id = t.ident
+                res = ctypes.pythonapi.PyThreadState_SetAsyncExc(thread_id, ctypes.py_object(SystemExit))
+                if res > 1:
+                    ctypes.pythonapi.PyThreadState_SetAsyncExc(thread_id, 0)
+                    print('Failed to kill thread: ', thread_id)
+                else:
+                    self.threads.remove(t)
             else:
                 self.threads.remove(t)
 

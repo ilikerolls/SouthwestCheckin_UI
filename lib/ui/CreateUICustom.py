@@ -62,11 +62,11 @@ class CreateUICustom(CreateUI):
             self.pushButton_start_stop.setText('Start')
             self.running = False
 
-    def auto_check_in_finished(self, msg, Error):
+    def auto_check_in_finished(self, msg, error):
         """
         Runs after auto_check_in is finished and sets process as no longer running
 
-        :param Error: boolean. False if we failed to check in
+        :param error: boolean. False if we failed to check in
         :param msg: String containing your boarding seat
         """
 
@@ -74,7 +74,7 @@ class CreateUICustom(CreateUI):
         msg_box = QMessageBox()
         msg_box.setText(msg)
 
-        if not Error:
+        if not error:
             self.setWindowTitle('SouthWest Auto Checkin - Checked in successfully!')
             msg_box.setWindowTitle('Successfully Checked in!')
             msg_box.setIcon(QMessageBox.Information)
@@ -98,7 +98,7 @@ class CreateUICustom(CreateUI):
 
 
 class WorkerThread(QThread):
-    """ Worker Thread """
+    """ Worker Thread for GUI """
 
     sig_auto_check_in_finished = pyqtSignal(str, bool)
 
@@ -142,10 +142,11 @@ class WorkerThread(QThread):
         """
         Terminates a long running thread like hitting the stop button
         """
-        if self.task_name == 'auto_check_in':
-            self.task_running = False
-        else:
+        self.task_running = False
+
+        if self.task_name not in ['auto_check_in']:
             super().terminate()
+
 
 
 class Config(ConfigParser):
