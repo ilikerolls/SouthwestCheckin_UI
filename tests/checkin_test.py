@@ -51,3 +51,5 @@ def test_cli():
         check_in.auto_checkin()
     except Exception:
         pytest.fail("cli error")
+
+test_checkin()
