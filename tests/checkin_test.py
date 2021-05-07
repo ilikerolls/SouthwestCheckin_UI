@@ -1,11 +1,7 @@
-import json
 import pytest
-import requests
 import southwest
-import checkin
-from datetime import datetime, timedelta
-from .my_vcr import custom_vcr
-from pytz import timezone
+from checkin import CheckIN
+from my_vcr import custom_vcr
 
 my_vcr = custom_vcr()
 r = southwest.Reservation('XXXXXX', 'John', 'Smith')
@@ -29,9 +25,10 @@ def test_reservation_lookup():
 @my_vcr.use_cassette()
 def test_checkin():
     try:
-        r.checkin()
+        data = r.checkin()
+        assert data['flights'][0]['flightNumber'] == '1614'
     except Exception:
-        pytest.fail("Error checking in")
+        pytest.fail("Error checking in. Error: ")
 
 
 @my_vcr.use_cassette()
@@ -50,6 +47,10 @@ def test_openflights_api():
 @my_vcr.use_cassette()
 def test_cli():
     try:
-        checkin.auto_checkin('XXXXXX', 'John', 'Smith')
+        check_in = CheckIN('XXXXXX', 'John', 'Smith')
+        check_in.auto_checkin()
     except Exception:
         pytest.fail("cli error")
+
+
+test_checkin()
