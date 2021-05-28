@@ -47,6 +47,7 @@ class Reservation():
                 if 'httpStatusCode' in data and data['httpStatusCode'] in ['NOT_FOUND', 'BAD_REQUEST', 'FORBIDDEN']:
                     if 'Verify your information and try again.' in data['message']:
                         raise Exception('You did not enter the correct name or confirmation number! Try again!')
+
                     attempts += 1
                     if not self.verbose:
                         print(data['message'])
@@ -54,7 +55,7 @@ class Reservation():
                         print(r.headers)
                         print(json.dumps(data, indent=2))
                     if attempts > MAX_ATTEMPTS:
-                        sys.exit("Unable to get data, killing self")
+                        raise Exception(data['message'])
                     sleep(CHECKIN_INTERVAL_SECONDS)
                     continue
                 if self.verbose:

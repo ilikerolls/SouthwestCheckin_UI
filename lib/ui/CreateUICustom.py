@@ -46,21 +46,49 @@ class CreateUICustom(CreateUI):
         Start button pushed. Activates imdb searcher
         """
         if self.running is False:
-            self.config.get_cur_app_config()
-            self.worker_thread['auto_check_in'] = WorkerThread('auto_check_in', self.config)
-            self.worker_thread['auto_check_in'].sig_auto_check_in_finished.connect(self.auto_check_in_finished)
-            self.worker_thread['auto_check_in'].start()
+            if self.check_fields():
+                self.config.get_cur_app_config()
+                self.worker_thread['auto_check_in'] = WorkerThread('auto_check_in', self.config)
+                self.worker_thread['auto_check_in'].sig_auto_check_in_finished.connect(self.auto_check_in_finished)
+                self.worker_thread['auto_check_in'].start()
 
-            self.setWindowTitle('SouthWest Auto Checkin - Running')
-            self.pushButton_start_stop.setText('Stop')
-            self.running = True
+                self.setWindowTitle('SouthWest Auto Check in - Running')
+                self.pushButton_start_stop.setText('Stop')
+                self.running = True
         else:
             if self.worker_thread['auto_check_in'].isRunning():
                 self.worker_thread['auto_check_in'].terminate()
 
-            self.setWindowTitle('SouthWest Auto Checkin - Stopped')
+            self.setWindowTitle('SouthWest Auto Check in - Stopped')
             self.pushButton_start_stop.setText('Start')
             self.running = False
+
+    def check_fields(self):
+        """
+        Check text fields to make sure they are all filled in
+
+        :return: True if all fields are filled in. Otherwise return False
+        """
+        error_msg = None
+        if not self.lineEdit_first_name.text().isalpha():
+            error_msg = 'First Name needs input before running!'
+            self.lineEdit_first_name.setFocus()
+        elif not self.lineEdit_last_name.text().isalpha():
+            error_msg = 'Last Name needs input before running!'
+            self.lineEdit_last_name.setFocus()
+        elif not self.lineEdit_confirmation.text().isalnum():
+            error_msg = 'Confirmation Number needs input before running!'
+            self.lineEdit_confirmation.setFocus()
+
+        if error_msg is not None:
+            msg_box = QMessageBox()
+            msg_box.setText(error_msg)
+            msg_box.setWindowTitle('Input Error')
+            msg_box.setIcon(QMessageBox.Critical)
+            msg_box.exec_()
+            return False
+        else:
+            return True
 
     def auto_check_in_finished(self, msg, error):
         """
@@ -75,11 +103,11 @@ class CreateUICustom(CreateUI):
         msg_box.setText(msg)
 
         if not error:
-            self.setWindowTitle('SouthWest Auto Checkin - Checked in successfully!')
+            self.setWindowTitle('SouthWest Auto Check in - Checked in successfully!')
             msg_box.setWindowTitle('Successfully Checked in!')
             msg_box.setIcon(QMessageBox.Information)
         else:
-            self.setWindowTitle('SouthWest Auto Checkin - Stopped')
+            self.setWindowTitle('SouthWest Auto Check in - Stopped')
             msg_box.setWindowTitle('Error')
             msg_box.setText(msg)
             msg_box.setIcon(QMessageBox.Critical)
@@ -115,13 +143,14 @@ class WorkerThread(QThread):
         return task_result
 
     def auto_check_in(self):
-        """ Automatically Check into Southwest Airlines and display boarding seat when done. To be loaded in seperate
+        """ Automatically Check into Southwest Airlines and display boarding seat when done. To be loaded in separate
         thread not to freeze the GUI. Then emits message back to method connected to sig_auto_check_in_finished """
 
         error = False
+
+        check_in = CheckIN(self.config.get('MAIN', 'ConfirmationNum'), self.config.get('MAIN', 'FirstName'),
+                           self.config.get('MAIN', 'LastName'), False, cli=False)
         try:
-            check_in = CheckIN(self.config.get('MAIN', 'ConfirmationNum'), self.config.get('MAIN', 'FirstName'),
-                               self.config.get('MAIN', 'LastName'), False, cli=False)
             check_in.auto_checkin()
             while check_in.boarding_msg is None:
                 time.sleep(10)
@@ -146,7 +175,6 @@ class WorkerThread(QThread):
 
         if self.task_name not in ['auto_check_in']:
             super().terminate()
-
 
 
 class Config(ConfigParser):
