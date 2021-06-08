@@ -1,6 +1,7 @@
-from vcr import VCR
 import json
 import os
+
+from vcr import VCR
 
 # remove sensitive values from JSON response
 bad_fields = [

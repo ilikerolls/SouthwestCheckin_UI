@@ -1,12 +1,13 @@
-from PyQt5.QtWidgets import QMessageBox
-from PyQt5.QtCore import QThread, pyqtSignal
-
-from lib.ui.CreateUI import CreateUI
-from configparser import ConfigParser
 import os
 import sys
 import time
+from configparser import ConfigParser
+
+from PyQt5.QtCore import QThread, pyqtSignal
+from PyQt5.QtWidgets import QMessageBox
+
 from checkin import CheckIN
+from lib.ui.CreateUI import CreateUI
 
 __author__ = "Marcis Greenwood"
 __email__ = "greenwood.marcis@hotmail.com"

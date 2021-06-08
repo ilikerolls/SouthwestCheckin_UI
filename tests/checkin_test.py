@@ -1,7 +1,8 @@
 import pytest
+
 import southwest
 from checkin import CheckIN
-from my_vcr import custom_vcr
+from .my_vcr import custom_vcr
 
 my_vcr = custom_vcr()
 r = southwest.Reservation('XXXXXX', 'John', 'Smith')
@@ -10,8 +11,8 @@ r = southwest.Reservation('XXXXXX', 'John', 'Smith')
 @my_vcr.use_cassette()
 def test_generate_headers():
     headers = southwest.Reservation.generate_headers()
-    assert(headers['Content-Type'] == 'application/json')
-    assert(headers['X-API-Key'] == 'l7xx0a43088fe6254712b10787646d1b298e')
+    assert (headers['Content-Type'] == 'application/json')
+    assert (headers['X-API-Key'] == 'l7xx0a43088fe6254712b10787646d1b298e')
 
 
 @my_vcr.use_cassette()
@@ -51,6 +52,3 @@ def test_cli():
         check_in.auto_checkin()
     except Exception:
         pytest.fail("cli error")
-
-
-test_checkin()

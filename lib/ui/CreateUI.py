@@ -1,4 +1,5 @@
 from PyQt5 import QtWidgets
+
 from lib.ui.PyQtDesignerGenCode.Ui_main_Form import Ui_MainWindow
 from lib.ui.SystemTrayIcon import SystemTrayIcon
 

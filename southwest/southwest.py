@@ -1,8 +1,9 @@
-from time import sleep
-import requests
 import json
 import sys
 import uuid
+from time import sleep
+
+import requests
 
 BASE_URL = 'https://mobile.southwest.com/api/'
 CHECKIN_INTERVAL_SECONDS = 0.25

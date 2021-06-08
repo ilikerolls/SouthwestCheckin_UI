@@ -1,6 +1,7 @@
-import requests
 import json
+
 import pytz
+import requests
 
 
 def timezone_for_airport(airport_code):
