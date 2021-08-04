@@ -54,7 +54,7 @@ class Reservation():
                         print(r.headers)
                         print(json.dumps(data, indent=2))
                     if attempts > MAX_ATTEMPTS:
-                        sys.exit("Unable to get data, killing self")
+                        raise Exception(data['message'])
                     sleep(CHECKIN_INTERVAL_SECONDS)
                     continue
                 if self.verbose:
