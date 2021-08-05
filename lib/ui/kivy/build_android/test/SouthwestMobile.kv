@@ -1,0 +1,42 @@
+<MainWindow>:
+
+    first_name: first_name
+    last_name: last_name
+    confirmation_num: confirmation_num
+    start_button: start_button
+
+    GridLayout:
+
+        size: root.width - "200dp", root.height - "200dp"
+        pos: "100dp", "100dp"
+        cols: 2
+
+        Label:
+            text: "First Name: "
+
+        TextInput:
+            id: first_name
+            multiline: False
+
+        Label:
+            text: "Last Name: "
+
+        TextInput:
+            id: last_name
+            multiline: False
+
+        Label:
+            text: "Confirmation #: "
+
+        TextInput:
+            id: confirmation_num
+            multiline: False
+
+        Button:
+            id: start_button
+            text: "Start"
+            on_press: root.start_btn()
+
+        Button:
+            text: "Stop"
+            on_press: root.stop_btn()
