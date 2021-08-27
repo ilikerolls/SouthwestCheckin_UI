@@ -4,7 +4,7 @@ import sys
 from PyQt5 import QtWidgets
 from PyQt5.QtGui import QIcon
 
-from lib.ui.CreateUICustom import CreateUICustom
+from ui.CreateUICustom import CreateUICustom
 
 __author__ = "Marcis Greenwood"
 __email__ = "greenwood.marcis@hotmail.com"
@@ -25,7 +25,7 @@ def main():
     Starts Graphical User Interface App instead of command line
     """
     app = QtWidgets.QApplication(sys.argv)
-    icon_file = resource_path('lib/ui/img/SouthwestIcon.jpg')
+    icon_file = resource_path('ui/img/SouthwestIcon.jpg')
     app.setWindowIcon(QIcon(icon_file))
     app.setQuitOnLastWindowClosed(False)
 

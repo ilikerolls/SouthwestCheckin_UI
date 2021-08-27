@@ -1,7 +1,7 @@
 from PyQt5.QtWidgets import QMessageBox
 from PyQt5.QtCore import QThread, pyqtSignal
 
-from lib.ui.CreateUI import CreateUI
+from ui.CreateUI import CreateUI
 from configparser import ConfigParser
 import os
 import sys

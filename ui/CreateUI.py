@@ -1,6 +1,6 @@
 from PyQt5 import QtWidgets
-from lib.ui.PyQtDesignerGenCode.Ui_main_Form import Ui_MainWindow
-from lib.ui.SystemTrayIcon import SystemTrayIcon
+from ui.PyQtDesignerGenCode.Ui_main_Form import Ui_MainWindow
+from ui.SystemTrayIcon import SystemTrayIcon
 
 __author__ = "Marcis Greenwood"
 __email__ = "greenwood.marcis@hotmail.com"
